@@ -103,7 +103,7 @@ format:
       select(tailnum) %>%
       knitr::kable()
     ```
-10.  **Какая средняя температура воздуха была в сентябре в аэропорту John F Kennedy Intl (в градусах Цельсия)**
+10. **Какая средняя температура воздуха была в сентябре в аэропорту John F Kennedy Intl (в градусах Цельсия)?**
     ```{R}
     weather %>%
       filter(month == 9 & origin == faa_JFKI) %>%
