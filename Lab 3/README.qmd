@@ -1,0 +1,155 @@
+---
+title: "Основы обработки данных с помощью R и Dplyr"
+format: 
+  md:
+    output-file: README.md
+---
+
+## Цель
+
+1.  Развить практические навыки использования языка программирования R для обработки данных
+2.  Закрепить знания базовых типов данных языка R
+3.  Развить практические навыки использования функций обработки данных пакета `dplyr` – функции `select(), filter(), mutate(), arrange(), group_by()`
+
+## ️Исходные данные
+
+1.  R 4.4.1
+2.  RStudio 2024.04.2+764
+
+## ️Общий план выполнения
+
+Используя R и среду разработки RStudio IDE, выполнить задания.
+
+## Содержание ЛР
+
+### Шаг 1: Получение данных
+
+1.  **Установка пакета nycflights13**
+    ```{terminal}
+    install.packages('nycflights13')
+    ```
+2.  **Загрузка библиотек**
+    ```{R}
+    library(dplyr)
+    library(nycflights13)
+    ```
+3.  **Проверка полученных данных**
+    ```{R}
+    knitr::kable(head(flights)[,1:5])
+    ```
+    
+### Шаг 2: Ответы на вопросы
+
+1.  **Сколько встроенных в пакет nycflights13 датафреймов?**
+    ```{R}
+    ls("package:nycflights13") %>% length()
+    ```
+2.  **Сколько строк в каждом датафрейме?**
+    ```{R}
+    for (df in ls("package:nycflights13")) {
+      cat(df, "->", nrow(get(df)), "\n")
+    }
+    ```
+3.  **Сколько столбцов в каждом датафрейме?**
+    ```{R}
+    for (df in ls("package:nycflights13")) {
+      cat(df, "->", ncol(get(df)), "\n")
+    }
+    ```
+4.  **Как просмотреть примерный вид датафрейма?**
+    ```{R}
+    airlines %>% glimpse()
+    ```
+5.  **Сколько компаний-перевозчиков (carrier) учитывают эти наборы данных (представлено в наборах данных)?**
+    ```{R}
+    airlines %>%
+      select(carrier) %>%
+      unique() %>%
+      filter(!is.na(carrier)) %>%
+      nrow()
+    ```
+6.  **Сколько рейсов принял аэропорт John F Kennedy Intl в мае?**
+    ```{R}
+    faa_JFKI <- airports %>%
+      filter(name == "John F Kennedy Intl") %>%
+      select(faa) %>%
+      c()
+    
+    flights %>%
+      filter(month == 5 & origin == faa_JFKI) %>%
+      nrow()
+    ```
+7.  **Какой самый северный аэропорт?**
+    ```{R}
+    airports %>%
+      arrange(desc(lat)) %>%
+      head(1) %>%
+      select(name) %>%
+      knitr::kable()
+    ```
+8.  **Какой аэропорт самый высокогорный (находится выше всех над уровнем моря)?**
+    ```{R}
+    airports %>%
+      arrange(desc(alt)) %>%
+      head(1) %>%
+      select(name) %>%
+      knitr::kable()
+    ```
+9.  **Какие бортовые номера у самых старых самолетов?**
+    ```{R}
+    planes %>%
+      arrange(year) %>%
+      head(1) %>%
+      select(tailnum) %>%
+      knitr::kable()
+    ```
+10.  **Какая средняя температура воздуха была в сентябре в аэропорту John F Kennedy Intl (в градусах Цельсия)**
+    ```{R}
+    weather %>%
+      filter(month == 9 & origin == faa_JFKI) %>%
+      mutate(temp_C = (5/9) * (temp - 32)) %>%
+      summarise(avg_temp_C = mean(temp_C, na.rm = TRUE)) %>%
+      knitr::kable()
+    ```
+11. **Самолеты какой авиакомпании совершили больше всего вылетов в июне?**
+    ```{R}
+    carrier_June <- flights %>%
+      filter(month == 6) %>%
+      count(carrier) %>%
+      arrange(desc(n)) %>%
+      head(1) %>%
+      select(carrier) %>%
+      c()
+    
+    airlines %>%
+      filter(carrier == carrier_June) %>%
+      select(name) %>%
+      knitr::kable()
+    ```
+12. **Самолеты какой авиакомпании задерживались чаще других в 2013 году?**
+    ```{R}
+    carrier_delay <- flights %>%
+      filter(arr_delay > 0) %>%
+      count(carrier) %>%
+      arrange(desc(n)) %>%
+      head(1) %>%
+      select(carrier) %>%
+      c()
+    
+    airlines %>%
+      filter(carrier == carrier_delay) %>%
+      select(name) %>%
+      knitr::kable()
+    ```
+
+## ️Оценка результата
+
+Были использованы знания функций `select(), filter(), mutate(), arrange(), group_by()` для решения практических задач.
+
+## ️Вывод
+
+В результате выполнения работы были:
+
++   развиты практические навыки использования языка программирования R для обработки данных
++   закреплены знания базовых типов данных языка R
++   развиты практические навыки использования функций обработки данных пакета `dplyr` – функции `select(), filter(), mutate(), arrange(), group_by()`

@@ -1,5 +1,5 @@
 ---
-title: "Введение в R"
+title: "Основы обработки данных с помощью R и Dplyr"
 format: 
   md:
     output-file: README.md
@@ -8,11 +8,8 @@ format:
 ## Цель
 
 1.  Развить практические навыки использования языка программирования R для обработки данных
-2.  Развить навыки работы в Rstudio IDE:
-    -   установка пакетов
-    -   работа с проектами в Rstudio
-    -   настройка и работа с Git
-3.  Закрепить знания базовых типов данных языка R и простейших операций с ними
+2.  Закрепить знания базовых типов данных языка R
+3.  Развить практические навыки использования функций обработки данных пакета `dplyr` – функции `select(), filter(), mutate(), arrange(), group_by()`
 
 ## ️Исходные данные
 
@@ -21,48 +18,117 @@ format:
 
 ## ️Общий план выполнения
 
-Освоение базовых операций в языке R с использованием программного пакета **swirl**.
+Используя R и среду разработки RStudio IDE, выполнить задания.
 
 ## Содержание ЛР
 
-### Шаг 1: Настройка swirl
+### Шаг 1: Получение данных
 
-1.  **Установить программный пакет swirl с помощью:**
-    - интерфейса RStudio IDE
-    - функции R:
+1.  **Установка пакета dplyr**
     ```{terminal}
-    install.packages("swirl")
+    install.packages('dplyr')
     ```
-2.  **Запустить задание с помощью**
-    ```{terminal}
-    swirl::swirl()
+2.  **Загрузка библиотеки**
+    ```{R}
+    library(dplyr)
     ```
-3.  **Выбрать из меню курсов `1. R Programming: The basics of programming in R`**
-    ![Image description](./images/1.png)
+3.  **Проверка полученных данных**
+    ```{R}
+    knitr::kable(head(starwars)[,1:5])
+    ```
+    
+### Шаг 2: Ответы на вопросы
 
-### Шаг 2: Прохождение подкурсов
-
-1.  **Basic Building Blocks**
-    ![Image description](./images/2.png)
-2.  **Workspace and Files**
-    ![Image description](./images/3.png)
-3.  **Sequences of Numbers**
-    ![Image description](./images/4.png)
-4.  **Vectors**
-    ![Image description](./images/5.png)
-5.  **Missing Values**
-    ![Image description](./images/6.png)
+1.  **Сколько строк в датафрейме?**
+    ```{R}
+    starwars %>% nrow()
+    ```
+2.  **Сколько столбцов в датафрейме?**
+    ```{R}
+    starwars %>% ncol()
+    ```
+3.  **Как просмотреть примерный вид датафрейма?**
+    ```{R}
+    starwars %>% glimpse()
+    ```
+4.  **Сколько уникальных рас персонажей (species) представлено в данных?**
+    ```{R}
+    starwars['species'] %>%
+      unique() %>%
+      is.na() %>%
+      '!'() %>%
+      sum(na.rm = TRUE)
+    ```
+5.  **Найти самого высокого персонажа**
+    ```{R}
+    starwars %>% 
+      arrange(desc(height)) %>%
+      select(name) %>%
+      head(1) %>%
+      knitr::kable()
+    ```
+6.  **Найти всех персонажей ниже 170**
+    ```{R}
+    starwars %>% 
+      filter(height < 170) %>%
+      select(name) %>%
+      knitr::kable()
+    ```
+7.  **Подсчитать ИМТ (индекс массы тела) для всех персонажей**
+    ```{R}
+    starwars %>%
+      mutate(BMI = mass / ((height / 100) ^ 2)) %>%
+      filter(!is.na(BMI)) %>%
+      select(name, BMI) %>%
+      knitr::kable()
+    ```
+8.  **Найти 10 самых “вытянутых” персонажей. “Вытянутость” оценить по отношению массы (mass) к росту (height) персонажей.**
+    ```{R}
+    starwars %>%
+      mutate(elongation = mass / height) %>%
+      arrange(desc(elongation)) %>%
+      select(name) %>%
+      head(10) %>%
+      knitr::kable()
+    ```
+9.  **Найти средний возраст персонажей каждой расы вселенной Звездных войн**
+    ```{R}
+    starwars %>%
+      mutate(age = birth_year + 4) %>%
+      filter(!is.na(age)) %>%
+      group_by(species) %>%
+      summarise(avg_age = mean(age, na.rm = TRUE)) %>%
+      select(species, avg_age) %>%
+      knitr::kable()
+    ```
+10. **Найти самый распространенный цвет глаз персонажей вселенной Звездных войн**
+    ```{R}
+    starwars %>%
+      count(eye_color) %>%
+      arrange(desc(n)) %>%
+      select(eye_color) %>%
+      head(1) %>%
+      knitr::kable()
+    ```
+11. **Подсчитать среднюю длину имени в каждой расе вселенной Звездных войн**
+    ```{R}
+    starwars %>%
+      filter(!is.na(species)) %>%
+      mutate(len_name = nchar(name)) %>%
+      group_by(species) %>%
+      summarise(avg_len_name = mean(len_name, na.rm = TRUE)) %>%
+      select(species, avg_len_name) %>%
+      knitr::kable()
+    ```
 
 ## ️Оценка результата
 
-Был использован пакет **swirl** для получения бызовых знаний языка R.
+Были использованы знания функций `select(), filter(), mutate(), arrange(), group_by()` для решения практических задач.
 
 ## ️Вывод
 
-В результате выполнения работы были освоены такие аспекты языка R, как:
+В результате выполнения работы были:
 
-+ базовые структурные блоки (Basic Building Blocks)
-+ рабочие пространства и файлы (Workspace and Files)
-+ последовательности чисел (Sequences of Numbers)
-+ векторы (Vectors)
-+ пропущенные значения (Missing Values)
++   развиты практические навыки использования языка программирования R для обработки данных
++   закреплены знания базовых типов данных языка R
++   развиты практические навыки использования функций обработки данных пакета `dplyr` – функции `select(), filter(), mutate(), arrange(), group_by()`
