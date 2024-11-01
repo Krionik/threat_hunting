@@ -33,6 +33,13 @@ format:
     ```{terminal}
     install.packages("swirl")
     ```
+    
+    ::: info
+    **Информация:** Получение функций `swirl`
+    ```{r}
+    swirl::info()
+    ```
+    :::
 2.  **Запустить задание с помощью**
     ```{terminal}
     swirl::swirl()

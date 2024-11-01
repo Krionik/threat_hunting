@@ -1,0 +1,100 @@
+---
+title: "Использование Yandex Query для анализа данных сетевой активности"
+format: 
+  md:
+    output-file: README.md
+---
+
+## Цель
+
+1.  Изучить возможности технологии `Yandex Query` для анализа структурированных наборов данных
+2.  Получить навыки построения аналитического пайплайна для анализа данных с помощью сервисов `Yandex Cloud`
+3.  Закрепить практические навыки использования `SQL` для анализа данных сетевой активности в сегментированной корпоративной сети
+
+
+## ️Исходные данные
+
+1.  R 4.4.1
+2.  RStudio 2024.04.2+764
+3.  Yandex Cloud
+
+## ️Общий план выполнения
+
+Используя сервис [Yandex Query](https://yandex.cloud/ru/docs/query/concepts/) настроить доступ к данным, хранящимся в сервисе хранения данных `Yandex Object Storage`. При помощи соответствующих SQL запросов ответить на вопросы.
+
+## Содержание ЛР
+
+### Шаг 1: Проверить доступность данных в Yandex Object Storage
+
+Файл `yaqry_dataset.pqt` бакета `arrow-datasets` доступен по адресу [yaqry_dataset.pqt](https://storage.yandexcloud.net/arrow-datasets/yaqry_dataset.pqt)
+
+![Image description](./images/1.png)
+    
+### Шаг 2: Подключить бакет как источник данных для Yandex Query
+
+1.  **Создать соединение для бакета в S3 хранилище**
+
+    ![Image description](./images/2.png)
+
+### Шаг 3: Задания
+
+1.  **Известно, что IP адреса внутренней сети начинаются с октетов, принадлежащих интервалу '12-14'. Определите количество хостов внутренней сети, представленных в датасете.**
+
+    ```
+    SELECT COUNT(*) FROM (
+        SELECT DISTINCT ip FROM (
+            SELECT dst AS ip FROM yaqry_dataset
+            WHERE dst LIKE '12.%' OR dst LIKE '13.%' OR dst LIKE '14.%'
+    
+            UNION
+            
+            SELECT src AS ip FROM yaqry_dataset
+            WHERE src LIKE '12.%' OR src LIKE '13.%' OR src LIKE '14.%'
+        )
+    )
+    ```
+    
+    ```{r}
+    1000
+    ```
+    
+    ![Image description](./images/3.png)
+
+2.  **Определите суммарный объем исходящего трафика**
+
+    ```
+    SELECT SUM(bytes) AS total_bytes FROM yaqry_dataset
+    WHERE (src LIKE '12.%' OR src LIKE '13.%' OR src LIKE '14.%')
+          and (dst NOT LIKE '12.%' AND dst NOT LIKE '13.%' AND dst NOT LIKE '14.%')
+    ```
+    
+    ```{r}
+    6726396441
+    ```
+    
+    ![Image description](./images/4.png)
+
+3.  **Определите суммарный объем входящего трафика**
+
+    ```
+    SELECT SUM(bytes) AS total_bytes FROM yaqry_dataset
+    WHERE (dst LIKE '12.%' OR dst LIKE '13.%' OR dst LIKE '14.%')
+          and (src NOT LIKE '12.%' AND src NOT LIKE '13.%' AND src NOT LIKE '14.%')
+    ```
+    
+    ```{r}
+    12459379906
+    ```
+    
+    ![Image description](./images/5.png)
+    
+## ️Оценка результата
+
+Был проведён анализ сегментированной корпоративной сети с помощью языка `SQL`
+
+## ️Вывод
+
+В результате выполнения работы были:
+
++   изучены возможности технологии `Yandex Query` для анализа структурированных наборов данных
++   закреплены практические навыки использования `SQL` для анализа данных сетевой активности в сегментированной корпоративной сети
