@@ -30,19 +30,13 @@ Query](https://yandex.cloud/ru/docs/query/concepts/) настроить дост
 Файл `yaqry_dataset.pqt` бакета `arrow-datasets` доступен по адресу
 [yaqry_dataset.pqt](https://storage.yandexcloud.net/arrow-datasets/yaqry_dataset.pqt)
 
-<figure>
-<img src="./images/1.png" alt="Image description" />
-<figcaption aria-hidden="true">Image description</figcaption>
-</figure>
+![](./images/1.png)
 
 ### Шаг 2: Подключить бакет как источник данных для Yandex Query
 
 1.  **Создать соединение для бакета в S3 хранилище**
 
-    <figure>
-    <img src="./images/2.png" alt="Image description" />
-    <figcaption aria-hidden="true">Image description</figcaption>
-    </figure>
+    ![](./images/2.png)
 
 ### Шаг 3: Задания
 
@@ -68,10 +62,7 @@ Query](https://yandex.cloud/ru/docs/query/concepts/) настроить дост
 
         [1] 1000
 
-    <figure>
-    <img src="./images/3.png" alt="Image description" />
-    <figcaption aria-hidden="true">Image description</figcaption>
-    </figure>
+    ![](./images/3.png)
 
 2.  **Определите суммарный объем исходящего трафика**
 
@@ -85,10 +76,7 @@ Query](https://yandex.cloud/ru/docs/query/concepts/) настроить дост
 
         [1] 6726396441
 
-    <figure>
-    <img src="./images/4.png" alt="Image description" />
-    <figcaption aria-hidden="true">Image description</figcaption>
-    </figure>
+    ![](./images/4.png)
 
 3.  **Определите суммарный объем входящего трафика**
 
@@ -102,10 +90,7 @@ Query](https://yandex.cloud/ru/docs/query/concepts/) настроить дост
 
         [1] 12459379906
 
-    <figure>
-    <img src="./images/5.png" alt="Image description" />
-    <figcaption aria-hidden="true">Image description</figcaption>
-    </figure>
+    ![](./images/5.png)
 
 ## ️Оценка результата
 

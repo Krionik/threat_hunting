@@ -45,20 +45,25 @@ format:
     swirl::swirl()
     ```
 3.  **Выбрать из меню курсов `1. R Programming: The basics of programming in R`**
-    ![Image description](./images/1.png)
+
+    ![](./images/1.png)
 
 ### Шаг 2: Прохождение подкурсов
 
 1.  **Basic Building Blocks**
-    ![Image description](./images/2.png)
+
+    ![](./images/2.png)
 2.  **Workspace and Files**
-    ![Image description](./images/3.png)
+
+    ![](./images/3.png)
 3.  **Sequences of Numbers**
-    ![Image description](./images/4.png)
+
+    ![](./images/4.png)
 4.  **Vectors**
-    ![Image description](./images/5.png)
+    ![](./images/5.png)
 5.  **Missing Values**
-    ![Image description](./images/6.png)
+
+    ![](./images/6.png)
 
 ## ️Оценка результата
 

@@ -1,16 +1,13 @@
 # Введение в R
 
-
 ## Цель
 
-1.  Развить практические навыки использования языка программирования R
-    для обработки данных
+1.  Развить практические навыки использования языка программирования R для обработки данных
 2.  Развить навыки работы в Rstudio IDE:
     -   установка пакетов
     -   работа с проектами в Rstudio
     -   настройка и работа с Git
-3.  Закрепить знания базовых типов данных языка R и простейших операций
-    с ними
+3.  Закрепить знания базовых типов данных языка R и простейших операций с ними
 
 ## ️Исходные данные
 
@@ -19,8 +16,7 @@
 
 ## ️Общий план выполнения
 
-Освоение базовых операций в языке R с использованием программного пакета
-**swirl**.
+Освоение базовых операций в языке R с использованием программного пакета **swirl**.
 
 ## Содержание ЛР
 
@@ -41,21 +37,22 @@
     swirl::info()
     ```
 
+    ```         
+    | When you are at the R prompt (>):
 
-        | When you are at the R prompt (>):
+    | -- Typing skip() allows you to skip the current question.
 
-        | -- Typing skip() allows you to skip the current question.
+    | -- Typing play() lets you experiment with R on your own; swirl will ignore
+    | what you do...
 
-        | -- Typing play() lets you experiment with R on your own; swirl will ignore
-        | what you do...
+    | -- UNTIL you type nxt() which will regain swirl's attention.
 
-        | -- UNTIL you type nxt() which will regain swirl's attention.
+    | -- Typing bye() causes swirl to exit. Your progress will be saved.
 
-        | -- Typing bye() causes swirl to exit. Your progress will be saved.
+    | -- Typing main() returns you to swirl's main menu.
 
-        | -- Typing main() returns you to swirl's main menu.
-
-        | -- Typing info() displays these options again.
+    | -- Typing info() displays these options again.
+    ```
 
 2.  **Запустить задание с помощью**
 
@@ -63,17 +60,29 @@
     swirl::swirl()
     ```
 
-3.  **Выбрать из меню курсов
-    `1. R Programming: The basics of programming in R`** ![Image
-    description](./images/1.png)
+3.  **Выбрать из меню курсов `1. R Programming: The basics of programming in R`**
+
+    ![](./images/1.png)
 
 ### Шаг 2: Прохождение подкурсов
 
-1.  **Basic Building Blocks** ![Image description](./images/2.png)
-2.  **Workspace and Files** ![Image description](./images/3.png)
-3.  **Sequences of Numbers** ![Image description](./images/4.png)
-4.  **Vectors** ![Image description](./images/5.png)
-5.  **Missing Values** ![Image description](./images/6.png)
+1.  **Basic Building Blocks**
+
+    ![](./images/2.png)
+
+2.  **Workspace and Files**
+
+    ![](./images/3.png)
+
+3.  **Sequences of Numbers**
+
+    ![](./images/4.png)
+
+4.  **Vectors** ![](./images/5.png)
+
+5.  **Missing Values**
+
+    ![](./images/6.png)
 
 ## ️Оценка результата
 

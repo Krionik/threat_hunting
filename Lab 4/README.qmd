@@ -28,13 +28,13 @@ format:
 
 Файл `yaqry_dataset.pqt` бакета `arrow-datasets` доступен по адресу [yaqry_dataset.pqt](https://storage.yandexcloud.net/arrow-datasets/yaqry_dataset.pqt)
 
-![Image description](./images/1.png)
+![](./images/1.png)
     
 ### Шаг 2: Подключить бакет как источник данных для Yandex Query
 
 1.  **Создать соединение для бакета в S3 хранилище**
 
-    ![Image description](./images/2.png)
+    ![](./images/2.png)
 
 ### Шаг 3: Задания
 
@@ -58,7 +58,7 @@ format:
     1000
     ```
     
-    ![Image description](./images/3.png)
+    ![](./images/3.png)
 
 2.  **Определите суммарный объем исходящего трафика**
 
@@ -72,7 +72,7 @@ format:
     6726396441
     ```
     
-    ![Image description](./images/4.png)
+    ![](./images/4.png)
 
 3.  **Определите суммарный объем входящего трафика**
 
@@ -86,7 +86,7 @@ format:
     12459379906
     ```
     
-    ![Image description](./images/5.png)
+    ![](./images/5.png)
     
 ## ️Оценка результата
 
