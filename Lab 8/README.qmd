@@ -1,0 +1,140 @@
+---
+title: "Анализ данных сетевого трафика с использованием аналитической in-memory СУБД DuckDB"
+format: 
+  md:
+    output-file: README.md
+---
+
+## Цель
+
+1. Изучить возможности СУБД [DuckDB](https://duckdb.org//) для обработки и анализ больших данных
+2. Получить навыки применения DuckDB совместно с языком программирования R
+3. Получить навыки анализа `метаинфомации о сетевом трафике`
+4. Получить навыки применения облачных технологий хранения, подготовки и анализа данных: [Yandex Object Storage](https://yandex.cloud/ru/docs/storage/), [Rstudio Server](https://posit.co/products/open-source/rstudio-server/)
+
+## ️Исходные данные
+
+1.  R 4.4.1
+2.  RStudio 2024.04.2+764
+3.  Yandex Cloud
+
+## ️Общий план выполнения
+
+Используя язык программирования `R`, библиотеку `arrow` и облачную `IDE Rstudio Server`, развернутую в `Yandex Cloud`, выполнить задания и составить отчет.
+
+## Содержание ЛР
+
+### Подготовка данных
+
+1. **Загрузка пакетов**
+
+```{R}
+library(DBI)
+library(duckdb)
+library(dplyr)
+```
+
+2. **Установка соединения**
+
+```{R}
+con <- dbConnect(duckdb())
+```
+
+```{R}
+dbGetQuery(con, "CREATE TABLE new_tbl AS SELECT * FROM read_parquet('./../Lab 7/data/tm_data.pqt');")
+```
+
+### Задание 1: Найдите утечку данных из Вашей сети
+
+```{R}
+dbGetQuery(con, "
+           SELECT src FROM new_tbl
+           WHERE (src LIKE '12.%' or src LIKE '13.%' or src LIKE '14.%') and 
+           NOT (dst LIKE '12.%' or dst LIKE '13.%' or dst LIKE '14.%')
+           GROUP BY src
+           ORDER BY sum(bytes) DESC
+           LIMIT 1
+           ") %>% 
+  knitr::kable()
+```
+
+### Задание 2: Найдите утечку данных 2
+
+```{R}
+dbGetQuery(con, "
+           SELECT extract(hour FROM epoch_ms(cast(timestamp as bigint))) as hour, STDDEV(bytes) as sd FROM new_tbl
+           WHERE (src LIKE '12.%' or src LIKE '13.%' or src LIKE '14.%') and 
+           NOT (dst LIKE '12.%' or dst LIKE '13.%' or dst LIKE '14.%')
+           GROUP BY hour
+           ORDER BY sd DESC
+           LIMIT 1
+           ") %>%
+  knitr::kable()
+```
+
+```{R}
+dbGetQuery(con, "
+           SELECT src FROM new_tbl
+           WHERE (src LIKE '12.%' or src LIKE '13.%' or src LIKE '14.%') and 
+           NOT (dst LIKE '12.%' or dst LIKE '13.%' or dst LIKE '14.%') and
+           extract(hour FROM epoch_ms(cast(timestamp as bigint))) == 7
+           GROUP BY src
+           ORDER BY sum(bytes) DESC
+           LIMIT 1
+           ") %>%
+  knitr::kable()
+```
+
+### Задание 3: Найдите утечку данных 3
+
+```{R}
+dbGetQuery(con, "
+           SELECT port, count(DISTINCT src) as count_src FROM new_tbl
+           WHERE (src LIKE '12.%' or src LIKE '13.%' or src LIKE '14.%') and 
+           NOT (dst LIKE '12.%' or dst LIKE '13.%' or dst LIKE '14.%')
+           GROUP BY port
+           ORDER BY count_src
+           ") %>%
+  knitr::kable()
+```
+
+```{R}
+dbGetQuery(con, "
+           WITH ranked_src AS (
+           SELECT port, src, SUM(bytes) AS total_bytes,
+           ROW_NUMBER() OVER (PARTITION BY port ORDER BY SUM(bytes) DESC) AS rn
+           FROM new_tbl
+           GROUP BY port, src
+           )
+
+           SELECT port, src, total_bytes FROM ranked_src
+           WHERE rn <= 2
+           ") %>%
+  knitr::kable()
+```
+
+```{R}
+dbGetQuery(con, "
+           SELECT src FROM new_tbl
+           WHERE (src LIKE '12.%' or src LIKE '13.%' or src LIKE '14.%') and 
+           NOT (dst LIKE '12.%' or dst LIKE '13.%' or dst LIKE '14.%') and
+           port == 124
+           GROUP BY src
+           ORDER BY sum(bytes) DESC
+           LIMIT 1
+           ") %>%
+  knitr::kable()
+```
+
+
+## ️Оценка результата
+
+Был проведён анализ сегментированной корпоративной сети с помощью аналитической in-memory СУБД `DuckDB`
+
+## ️Вывод
+
+В результате выполнения работы были:
+
++ изучены возможности СУБД [DuckDB](https://duckdb.org//) для обработки и анализ больших данных
++ получены навыки применения DuckDB совместно с языком программирования R
++ получены навыки анализа `метаинфомации о сетевом трафике`

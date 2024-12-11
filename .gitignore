@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+.RDataTmp*
+Lab 7/data
